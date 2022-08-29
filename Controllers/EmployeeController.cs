@@ -90,23 +90,23 @@ namespace Assi7.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = empDb.EmployeeTable.Find(empId);
-         
+            var item = empDb.EmployeeTable.FirstOrDefault(x => x.EmpId ==empId);
+
             if (empId == null)
             {
                 return HttpNotFound();
             }
-            return View(employee);
+            return View(item);
             
         }
 
    
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int empId)
+        public ActionResult ConfirmDelete(int empId)
         {
-            Employee employee = empDb.EmployeeTable.Find(empId);
-            empDb.EmployeeTable.Remove(employee);
+            var item = empDb.EmployeeTable.FirstOrDefault(x => x.EmpId == empId);
+            empDb.EmployeeTable.Remove(item);
             empDb.SaveChanges();
             return RedirectToAction("Index");
         }
