@@ -13,70 +13,63 @@ namespace Assi7.Controllers
     {
         // GET: Department
         EmployeeContext empDb = new EmployeeContext();
+      
         public ActionResult Index()
         {
-
-
             return View(empDb.DepartmentTable.ToList());
         }
-        public ActionResult Details(int? deptId)
+
+        public ActionResult Details(int deptId)
         {
-            if (deptId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-                  Department department = empDb.DepartmentTable.Find(deptId);
-            if (department == null)
-            {
-                return HttpNotFound();
-            }
-            return View(department);
+            var item = empDb.DepartmentTable.FirstOrDefault(x => x.DeptId == deptId);
+            return View(item);
         }
+
         public ActionResult Create()
         {
             return View();
         }
 
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DeptId,DeptName")] Department department)
-        {
-            if (ModelState.IsValid)
-            {
-                empDb.DepartmentTable.Add(department);
-                empDb.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(department);
-        }
-        public ActionResult Edit(int? deptId)
+        public RedirectResult Create(Department dept)
         {
-            if (deptId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = empDb.DepartmentTable.Find(deptId);
-            if (department == null)
-            {
-                return HttpNotFound();
-            }
-            return View(department);
+            empDb.DepartmentTable.Add(dept);
+            empDb.SaveChanges();
+            return Redirect("/Department/Index");
         }
 
+        public ActionResult Edit(int deptId)
+        {
+            var item = empDb.DepartmentTable.FirstOrDefault(x => x.DeptId == deptId);
+            return View(item);
+        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DeptName")] Department department)
+
+        public RedirectResult Edit(Department dept)
         {
-            if (ModelState.IsValid)
-            {
-                empDb.Entry(department).State = EntityState.Modified;
-                empDb.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(department);
+            var item = empDb.DepartmentTable.FirstOrDefault(x => x.DeptId == dept.DeptId);
+            item.DeptName = dept.DeptName;
+            empDb.SaveChanges();
+            return Redirect("/Department/Index");
+        }
+
+        public ActionResult Delete(int deptId)
+        {
+            var item = empDb.DepartmentTable.FirstOrDefault(x => x.DeptId == deptId);
+            return View(item);
+        }
+
+        [HttpPost]
+
+        public RedirectResult ConfirmDelete(int deptId)
+        {
+            var item = empDb.DepartmentTable.FirstOrDefault(x => x.DeptId == deptId);
+            empDb.DepartmentTable.Remove(item);
+            empDb.SaveChanges();
+            return Redirect("/Department/Index");
         }
     }
+
 }

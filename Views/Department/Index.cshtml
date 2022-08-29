@@ -23,9 +23,9 @@
             @Html.DisplayFor(modelItem => item.DeptName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DeptId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DeptId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DeptId })
+            @Html.ActionLink("Edit", "Edit", new { deptId=item.DeptId }) |
+            @Html.ActionLink("Details", "Details", new { deptId = item.DeptId }) |
+            @Html.ActionLink("Delete", "Delete", new { deptId = item.DeptId })
         </td>
     </tr>
 }
