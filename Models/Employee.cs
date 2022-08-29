@@ -39,10 +39,10 @@ namespace Assi7.Models
 
         [Required(ErrorMessage = "Department Id is required")]
         [ForeignKey ("Department")]
-        public int Departments_DeptId{ get; set; }
+        public int DeptId{ get; set; }
 
        
-        public Department Department { get; set; }
+       public virtual Department Department { get; set; }
 
 
 

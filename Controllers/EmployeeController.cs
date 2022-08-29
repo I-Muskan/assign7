@@ -20,15 +20,16 @@ namespace Assi7.Controllers
         }
         public ActionResult Details(int? empId)
         {
-            if (empId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Employee employee = empDb.EmployeeTable.Find(empId);
-            if (employee == null)
-            {
-                return HttpNotFound();
-            }
+            
+            //if (empId == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            var employee = empDb.EmployeeTable.FirstOrDefault(x => x.EmpId == empId);
+            //if (employee == null)
+            //{
+            //    return HttpNotFound();
+            //}
             return View(employee);
         }
         public ActionResult Create()
@@ -39,10 +40,18 @@ namespace Assi7.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Employee employee)
+        public ActionResult Create(string Name,string Gender,string City,decimal Salary,int DeptId)
         {
-          
-                empDb.EmployeeTable.Add(employee);
+
+            Employee employee = new Employee();
+            employee.Name = Name;
+            employee.Gender = Gender;
+            employee.City = City;
+            employee.Salary = Salary;
+            employee.DeptId = DeptId;
+
+
+            empDb.EmployeeTable.Add(employee);
                 empDb.SaveChanges();
                 return RedirectToAction("Index");
            
@@ -51,30 +60,38 @@ namespace Assi7.Controllers
         }
         public ActionResult Edit(int? empId)
         {
-            if (empId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Employee employee = empDb.EmployeeTable.Find(empId);
-            if (employee == null)
-            {
-                return HttpNotFound();
-            }
+            //if (empId == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            var employee = empDb.EmployeeTable.FirstOrDefault(x=>x.EmpId==empId);
+            //if (employee == null)
+            //{
+            //    return HttpNotFound();
+            //}
             return View(employee);
         }
 
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EmpId,Name,Gender,Salary,DeptId")] Employee employee)
+        public ActionResult Edit(string Name, string Gender, string City, decimal Salary, int DeptId)
         {
-            if (ModelState.IsValid)
-            {
-                empDb.Entry(employee).State = EntityState.Modified;
+            var item = empDb.EmployeeTable.FirstOrDefault(x => x.Name == Name);
+            
+
+                item.City = City;
+                item.DeptId = DeptId;
+                item.Gender = Gender;
+                item.Name = Name;
+                item.Salary = Salary;
                 empDb.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            return View(employee);
+              
+
+            
+        
+
         }
         public ActionResult Delete(int? empId)
         {
