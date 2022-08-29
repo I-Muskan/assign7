@@ -18,19 +18,10 @@ namespace Assi7.Controllers
            
             return View(empDb.EmployeeTable.ToList());
         }
-        public ActionResult Details(int? empId)
+        public ActionResult Details(int empId)
         {
-            
-            //if (empId == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            var employee = empDb.EmployeeTable.FirstOrDefault(x => x.EmpId == empId);
-            //if (employee == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            return View(employee);
+            var item = empDb.EmployeeTable.FirstOrDefault(x => x.EmpId == empId);
+            return View(item);
         }
         public ActionResult Create()
         {
